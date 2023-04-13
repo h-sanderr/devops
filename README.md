@@ -1,16 +1,133 @@
 # Proposta de práticas de DevOps e Git branching.
 
+## Dicionário
+
+- _release_: lançamento
+- _feature_: recurso
+
 ## Motivação
 
-- Atualmente, eu e o Renan utilizamos o git de maneira diferente: eu trabalho com **main**, **develop** e uma branch para cada feature nova; o Renan trabalha apenas com **main** e **develop**. Isso causa confusão ao trabalhar junto no mesmo projeto, pois cada um manipula as branches de uma maneira.
-- Falta de controle sobre releases e versões dos firmwares. Especialmente quando próximo de entrar em ambiente de produção, pode causar problemas.
+- Atualmente, eu e o Renan utilizamos o git de maneira diferente: eu trabalho com `main`, `develop` e uma branch para cada feature novo; o Renan trabalha apenas com `main` e `develop`. Isso causa confusão ao trabalhar junto no mesmo projeto, pois cada um manipula as branches de uma maneira.
+- Falta de controle sobre _releases_ e versões dos firmwares. Especialmente quando próximo de entrar em ambiente de produção, pode causar problemas.
 - Com o aumento do número de pessoas desenvolvendo firmware, ficará mais difícil trabalhar em grupo caso não haja padrões bem definidos de DevOps e Git branching.
 
 ## Proposta
 
 A proposta é fazer o mais simples possível, levando em consideração que o desenvolvimento de firmware é diferente de outros tipos de software, já que o firmware pode depender do hardware e do ambiente de produção.
 
+A figura abaixo mostra o modelo de Git branching sugerido. Ao longo deste documento, a branch `master` será chamada de `main` pois é o nome que o time já está acostumado a utilizar.
+
+![Modelo de Git branching](./imgs/git_branching_model.png)
+
+### Principais branches
+
+As duas principais branches são `main` e `develop`. Ambas possuem um tempo de vida infinito, ou seja, nunca são deletadas.
+
+- `main`: Possui apenas estados do firmware prontos para produção.
+- `develop`: Possui apenas estados do firmware com as últimas mudanças para o próximo _release_.
+
+A figura abaixo ilustra a utilização das branches `main` e `develop`.
+
+![Branches main e develop](./imgs/main_develop.png)
+
+### Branches de suporte
+
+As branches de suporte são as branches de _feature_, _release_ e _hotfix_. Estas branches auxiliam no desenvolvimento paralelo entre diversos membros da equipe, rastreamento fácil de _features_, e arrumar rapidamente problemas encontrados em produção.
+
+#### Branches de _feature_
+
+Branches de _feature_ são originadas da branch `develop` e são incorporadas à mesma. Qualquer nome pode ser utilizado para estas branches, exceto `main`, `develop`, `release-\`_ e `hotfix-\`_.
+
+São utilizadas para o desenvolvimento de novos _features_ para o próximo _release_ ou um _release_ futuro. Idealmente, cada _feature_ deve ter um _release_ alvo.
+
+Quando incorporadas de volta à branch `develop`, são deletadas. Caso algo aconteça e for decidido que o _feature_ será descartado, basta deletar a branch sem incorporá-la de volta á branch `develop`.
+
+Branches de _feature_ normalmente existem apenas localmente.
+
+Exemplo de uso de uma branch de _feature_:
+
+```
+$ git checkout -b novo-feature develop
+
+... (desenvolvimento do feature) ...
+
+$ git checkout develop
+$ git merge --no-ff novo-feature
+$ git branch -d novo-feature
+$ git push origin develop
+```
+
+A flag `--no-ff` faz com que um novo _commit_ seja criado ao incorporar a nova branche, mantendo um histórico mais claro de commits. A figura abaixo ilustra a diferença entre uma incorporação utilizando a flag `--no-ff` (à esquerda) e uma com _fast forward_ (à direita).
+
+### Branches de _release_
+
+Branches de _release_ são originadas da branch `develop` e incorporadas às branches `develop` e `main`.
+
+A convenção de nomenclatura é `release-\`\*, em que \* é a versão do `release`, de dois números separados por um ponto (_e.g._, 1.2).
+
+Branches de _release_ guardam os códigos de preparação para determinado _release_, permitindo correção de bugs menores e da versão do firmware. Desta forma, a branch `develop` também pode continuar recebendo novos _features_ para o próximo _release_.
+
+O momento correto de criar uma branch de _release_ é quando todos os _features_ do _release_ já tiverem sido incorporados à branch `develop`, por isso a importância de saber o _release_ alvo de cada _feature_. É neste momento que a versão do firmware deve ser definida e as alterações associadas à versão devem ser realizadas.
+
+Quando o estado da branch estiver realmente pronto para um _release_, ela deve ser incorporada às branches `main` e `develop`. Ao incorporar à branch `main`, deve-se criar uma _tag_ para referência futura a esta versão.
+
+Exemplo de uso de uma branch de _release_:
+
+```console
+$ git checkout -b release-1.2 develop
+
+...(preparação para o release)...
+
+$ git commit -m "Finish release 1.2 preparation"
+$ git checkout master
+$ git merge --no-ff release-1.2
+$ git tag -a 1.2
+$ git push origin master
+$ git checkout develop
+$ git merge --no-ff release-1.2
+$ git push origin master
+$ git branch -d release-1.2
+```
+
+Se houver conflitos ao tentar incorporar à branch `develop`, o que é provável já que o número da versão foi alterado, deve-se resolver os conflitos e continuar a incorporação.
+
+### Branches de _hotfix_
+
+Branches de _hotfix_ são originadas da `main` e são incorporadas de volta à `develop` e à `main`.
+
+A convenção utilizada para nomear as branches de _hotfix_ é `hotfix-\`_, em que `\`_ é o número relativo à _hotfix_, que é associado ao número da _release_ (_e.g_, se a versão da _release_ é 1.2 e for o primeiro _hotfix_, o nome da branche fica `hotfix-1.2.1`).
+
+Branches de _hotfix_ não são planejadas e são criadas quando surge um problema numa versão já em produção que deve ser resolvido com urgência. Ao criar a branch de _hotfix_, a versão do firmware no código deve ser editada e, quando o problema for resolvido, a branch deve ser incorporada à `main` e à `develop`. Quando incorporada à `main`, deve-se criar uma _tag_. **Importante:** se uma branch de _release_ existir, em vez de incorporar a branch de _hotfix_ à `develop`, incorpora-se à branch de _release_. A figura abaixo ilustra o uso de branches de _hotfix_.
+
+![Branches de hotfix](./imgs/hotfix_branches.png)
+
+Exemplo de uso de branches de _hotfix_:
+
+```console
+$ git checkout -b hotfix-1.2.1 master
+
+...(resolução do problema)...
+
+$ git commit -m "Fixed severe production problem"
+$ git checkout master
+$ git merge --no-ff hotfix-1.2.1
+$ git tag -a 1.2.1
+$ git checkout develop
+$ git merge --no-ff hotfix-1.2.1
+$ git branch -d hotfix-1.2.1
+```
+
+### Resumo do conjunto de operações com Git
+
+1. Criar repositório no GitHub.
+2. Criar a branch `develop`.
+3.
+
 ## Referências
 
 - [How To Use Git-Flow In Embedded Software Development](https://medium.com/jumperiot/how-to-use-git-flow-in-embedded-software-development-dbb2a78da413)
 - [A successful Git branching model](https://nvie.com/posts/a-successful-git-branching-model/)
+- [Git: diferenças entre fast forward e three way](https://www.lumis.com.br/a-lumis/blog/git.htm)
+- [Git: Basic Branching and Merging](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
+- [What Is a Git Merge Fast Forward?](https://blog.mergify.com/what-is-a-git-merge-fast-forward/)
+- [Git Basics - Tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging)

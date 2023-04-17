@@ -36,7 +36,7 @@ As branches de suporte são as branches de _feature_, _release_ e _hotfix_. Esta
 
 #### Branches de _feature_
 
-Branches de _feature_ são originadas da branch `develop` e são incorporadas à mesma. Qualquer nome pode ser utilizado para estas branches, exceto `main`, `develop`, `release-\`_ e `hotfix-\`_.
+Branches de _feature_ são originadas da branch `develop` e são incorporadas à mesma. Qualquer nome pode ser utilizado para estas branches, exceto `main`, `develop`, `release-*` e `hotfix-*`.
 
 São utilizadas para o desenvolvimento de novos _features_ para o próximo _release_ ou um _release_ futuro. Idealmente, cada _feature_ deve ter um _release_ alvo.
 
@@ -63,7 +63,7 @@ A flag `--no-ff` faz com que um novo _commit_ seja criado ao incorporar a nova b
 
 Branches de _release_ são originadas da branch `develop` e incorporadas às branches `develop` e `main`.
 
-A convenção de nomenclatura é `release-\`\*, em que \* é a versão do `release`, de dois números separados por um ponto (_e.g._, 1.2).
+A convenção de nomenclatura é `release-*`, em que `*` é a versão do `release`, de dois números separados por um ponto (_e.g._, 1.2).
 
 Branches de _release_ guardam os códigos de preparação para determinado _release_, permitindo correção de bugs menores e da versão do firmware. Desta forma, a branch `develop` também pode continuar recebendo novos _features_ para o próximo _release_.
 
@@ -95,7 +95,7 @@ Se houver conflitos ao tentar incorporar à branch `develop`, o que é provável
 
 Branches de _hotfix_ são originadas da `main` e são incorporadas de volta à `develop` e à `main`.
 
-A convenção utilizada para nomear as branches de _hotfix_ é `hotfix-\`_, em que `\`_ é o número relativo à _hotfix_, que é associado ao número da _release_ (_e.g_, se a versão da _release_ é 1.2 e for o primeiro _hotfix_, o nome da branche fica `hotfix-1.2.1`).
+A convenção utilizada para nomear as branches de _hotfix_ é `hotfix-*`, em que `*` é o número relativo à _hotfix_, que é associado ao número da _release_ (_e.g_, se a versão da _release_ é 1.2 e for o primeiro _hotfix_, o nome da branche fica `hotfix-1.2.1`).
 
 Branches de _hotfix_ não são planejadas e são criadas quando surge um problema numa versão já em produção que deve ser resolvido com urgência. Ao criar a branch de _hotfix_, a versão do firmware no código deve ser editada e, quando o problema for resolvido, a branch deve ser incorporada à `main` e à `develop`. Quando incorporada à `main`, deve-se criar uma _tag_. **Importante:** se uma branch de _release_ existir, em vez de incorporar a branch de _hotfix_ à `develop`, incorpora-se à branch de _release_. A figura abaixo ilustra o uso de branches de _hotfix_.
 

@@ -23,7 +23,7 @@ A figura abaixo mostra o modelo de Git branching sugerido. Ao longo deste docume
 
 As duas principais branches são `main` e `develop`. Ambas possuem um tempo de vida infinito, ou seja, nunca são deletadas.
 
-- `main`: Possui apenas estados do firmware prontos para produção.
+- `main`: Possui apenas estados do firmware prontos para produção. **Importante:** toda vez que uma branch for incorporada à `main`, deve-se criar um _release_ no GitHub com o hexadecimal ou binário do firmware. Assim, um desenvolvedor não depende do outro nem das ferramentas deste para gravar o firmware desejado.
 - `develop`: Possui apenas estados do firmware com as últimas mudanças para o próximo _release_.
 
 A figura abaixo ilustra a utilização das branches `main` e `develop`.
@@ -69,7 +69,7 @@ Branches de _release_ guardam os códigos de preparação para determinado _rele
 
 O momento correto de criar uma branch de _release_ é quando todos os _features_ do _release_ já tiverem sido incorporados à branch `develop`, por isso a importância de saber o _release_ alvo de cada _feature_. É neste momento que a versão do firmware deve ser definida e as alterações associadas à versão devem ser realizadas.
 
-Quando o estado da branch estiver realmente pronto para um _release_, ela deve ser incorporada às branches `main` e `develop`. Ao incorporar à branch `main`, deve-se criar uma _tag_ para referência futura a esta versão.
+Quando o estado da branch estiver realmente pronto para um _release_, ela deve ser incorporada às branches `main` e `develop`. Ao incorporar à branch `main`, deve-se criar uma _tag_ para futura referência a esta versão. No GitHub, deve-se criar um _release_ com nome no padrão `nomedofirmware-*`, em que `*` é a versão do firmware. Por exemplo, se o firmware em questão for o XavierB na versão 1.2, o nome do _release_ deve ser `xavierb-1.2`.
 
 Exemplo de uso de uma branch de _release_:
 
@@ -228,11 +228,11 @@ $ git branch -d hotfix-1.2.1
 
 ## Perguntas relevantes
 
-## E o Jira?
+### E o Jira?
 
 Nada muda no Jira. Esta proposta se trata apenas de como as operações com Git são feitas.
 
-## Já estamos no meio do desenvolvimento, o que fazer neste caso?
+### Já estamos no meio do desenvolvimento, o que fazer neste caso?
 
 nice question
 

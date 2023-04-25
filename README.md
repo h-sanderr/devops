@@ -19,8 +19,7 @@
 
 ## Motivação
 
-- lalalalala teste
-- Atualmente, eu e o Renan utilizamos o git de maneira diferente: eu trabalho com `main`, `develop` e uma branch para cada feature novo; o Renan trabalha apenas com `main` e `develop`. Isso causa confusão ao trabalhar junto no mesmo projeto, pois cada um manipula as branches de uma maneira.
+- Atualmente, eu e o Renan utilizamos o git e versionamos o firmware de maneira diferente: por exemplo, eu trabalho com `main`, `develop` e uma branch para cada feature novo; o Renan trabalha apenas com `main` e `develop`. Isso causa confusão ao trabalhar junto no mesmo projeto, pois cada um manipula as branches de uma maneira.
 - Falta de controle sobre _releases_ e versões dos firmwares. Especialmente quando próximo de entrar em ambiente de produção, pode causar problemas.
 - Com o aumento do número de pessoas desenvolvendo firmware, ficará mais difícil trabalhar em grupo caso não haja padrões bem definidos de DevOps e Git branching.
 
@@ -147,6 +146,7 @@ $ git branch -d hotfix-1.2.1
 
 - No passo 1, utilizar um título no padrão `apelidodofirmware v[x.y.z]` (_e.g_, `xavierb 1.2.0`).
 - No passo 4, usar uma _tag_ existente, que já deve ter sido subida para o GitHub.
+- No passo 8, citar versão dos outros firmwares dependentes do que se está criando o _release_ (por exemplo, no caso do XavierB, citar versão do XavierL e XavierW).
 - No passo 9, incluir os arquivos binários/hexadecimais do firmware, seguindo o padrão `apelidodofirmware_hardwarealvo_v[x.y.z].[bin|hex]`. Por exemplo, no caso do arquivo hexadecimal do XavierB, compilado para a placa LEW840F-M2-V3 da Fanstel, na versão 1.2.0, o arquivo fica `xavierb_lew840fm2v3_v1.2.0.hex`, tudo em minúsculo e sem traços. De preferência, deve-se incluir os arquivos binários/hexadecimais para todos os hardwares no qual foi testado, incluindo o nRF52840DK, por exemplo.
 
 ## Exemplo do fluxo de Git branching e DevOps proposto

@@ -1,9 +1,21 @@
 # Proposta de práticas de DevOps e Git branching.
 
-## Dicionário
+## Dicionário de termos
 
 - _release_: lançamento.
 - _feature_: recurso.
+
+### Dicionário de Git
+
+- `git clone <url-ou-uri-do-repositorio>`: clona repositório remoto com URL/URI \<url-ou-uri-do-repositorio\>.
+- `git checkout <nome-branch>`: muda para branch com nome \<nome-branch\>.
+- `git checkout -b <nova-branch>`: cria branch com nome \<nova-branch\> a partir da branch atual.
+- `git add .`: adiciona todas as mudanças ao próximo _commit_.
+- `git commit -m "exemplo"`: cria _commit_ com mensagem "exemplo".
+- `git merge --no-ff <nome-branch>`: incorpora branch com nome \<nome-branch\> à branch atual, sem _fast forward_.
+- `git push <nome-remoto> <nome-branch>`: sobe mudanças na branch com nome \<nome-branch\> ao remoto com nome \<nome-remoto\>.
+- `git tag -a <x.y.z> -m "exemplo"`: cria _tag_ \<x.y.z\> a partir da branch atual, com mensagem "exemplo".
+- `git branch -d <nome-branch>`: deleta branch com nome \<nome-branch\>.
 
 ## Motivação
 
@@ -57,7 +69,7 @@ $ git add . # adiciona todas mudanças ao commit
 $ git commit -m "desenvolvimento de novo feature" # faz commit das mudanças
 $ git checkout develop # volta à develop
 $ git merge --no-ff novo-feature # incorpora novo-feature à develop
-$ git push origin develop # sobre mudanças para repositório remoto
+$ git push origin develop # sobre mudanças na develop para repositório remoto
 $ git branch -d novo-feature # deleta branch novo-feature
 ```
 
@@ -75,7 +87,7 @@ O momento correto de criar uma branch de _release_ é quando todos os _features_
 
 Quando o estado da branch estiver realmente pronto para um _release_, ela deve ser incorporada às branches `main` e `develop`. Ao incorporar à branch `main`, deve-se criar uma _tag_ para futura referência a esta versão e criar um _release_ no GitHub, conforme descrito [aqui](#criando-releases-no-github).
 
-Exemplo de uso de uma branch de _release_ (comentários sobre os comandos de git utilizados estão no bloco de código anterior, ou pode-se acessar a [documentação do Git](https://git-scm.com/doc)):
+Exemplo de uso de uma branch de _release_:
 
 ```console
 $ git checkout develop
@@ -84,15 +96,14 @@ $ git checkout -b release-1.2.0 develop release-1.2.0 a partir da develop
 preparação para o release...
 
 $ git add .
-$ git commit -m "Finish release 1.2.0 preparation"
+$ git commit -m "preparação para release 1.2.0 finalizada"
 $ git checkout main
 $ git merge --no-ff release-1.2.0
-$ git tag -a 1.2.0 # cria tag com base no estado atual do main
+$ git tag -a 1.2.0 -m "comentário sobre o release" # cria tag com base no estado atual do main
 $ git push origin main
 $ git checkout develop
 $ git merge --no-ff release-1.2.0
 $ git push origin develop
-$ git checkout 1.2.0
 $ git push origin 1.2.0
 $ git branch -d release-1.2.0
 ```
@@ -109,7 +120,7 @@ Branches de _hotfix_ não são planejadas e são criadas quando surge um problem
 
 ![Branches de hotfix](./imgs/hotfix_branches.png)
 
-Exemplo de uso de branches de _hotfix_ (comentários sobre os comandos de git utilizados estão no primeiro bloco de código deste documento, ou pode-se acessar a [documentação do Git](https://git-scm.com/doc)):
+Exemplo de uso de branches de _hotfix_:
 
 ```console
 $ git checkout -b hotfix-1.2.1 main
@@ -119,12 +130,11 @@ resolução do problema...
 $ git commit -m "Fixed severe production problem"
 $ git checkout main
 $ git merge --no-ff hotfix-1.2.1
-$ git tag -a 1.2.1
+$ git tag -a 1.2.1 -m "comentário sobre o hotfix"
 $ git push origin main
 $ git checkout develop
 $ git merge --no-ff hotfix-1.2.1
 $ git push origin develop
-$ git checkout 1.2.1
 $ git push origin 1.2.1
 $ git branch -d hotfix-1.2.1
 ```
@@ -142,7 +152,7 @@ $ git branch -d hotfix-1.2.1
 ## Exemplo do fluxo de Git branching e DevOps proposto
 
 1. Criar repositório no GitHub.
-2. Criar a branch `develop`.
+2. Criar a branch `develop` no GitHub.
 3. Clonar repositório localmente:
 
    - Clonando com SSH:
@@ -208,7 +218,7 @@ $ git branch -d hotfix-1.2.1
     $ git commit -m "últimos ajustes para release 0.1.0"
     $ git checkout main
     $ git merge --no-ff release-0.1.0
-    $ git tag -a 0.1.0
+    $ git tag -a 0.1.0 -m "primeiro release"
     $ git push origin main
     ```
 
@@ -224,7 +234,6 @@ $ git branch -d hotfix-1.2.1
 13. Subir _tag_ 0.1.0 para o GitHub:
 
     ```console
-    $ git checkout 0.1.0
     $ git push origin 0.1.0
     ```
 
@@ -244,7 +253,7 @@ $ git branch -d hotfix-1.2.1
     $ git commit -m "solução de problema urgente"
     $ git checkout main
     $ git merge --no-ff hotfix-0.1.1
-    $ git tag -a 0.1.1
+    $ git tag -a 0.1.1 "resolvido bug encontrado em produção"
     $ git push origin main
     ```
 
@@ -259,13 +268,12 @@ $ git branch -d hotfix-1.2.1
 18. Subir _tag_ 0.1.1 para o GitHub:
 
     ```console
-    $ git checkout 0.1.1
     $ git push origin 0.1.1
     ```
 
 19. Criar _release_ no GitHub conforme descrito [aqui](#criando-releases-no-github).
 
-20. Repetir passos ??-?? para os próximos _releases_.
+20. Repetir passos 6-19 para os próximos _releases_.
 
 ## Perguntas relevantes
 
@@ -275,7 +283,7 @@ Nada muda no Jira. Esta proposta se trata apenas de como as operações com Git 
 
 ### Já estamos no meio do desenvolvimento, o que fazer neste caso?
 
-nice question
+Sugestão: como nenhum _release_ foi feito, definir primeiro _release_ como 0.1.0 (quando for colocado no primeiro cliente) e começar a adotar as práticas de DevOps e Git branching sugeridas. Definir próximos _releases_ e os recursos a serem adicionados a cada um deles.
 
 ## Referências
 

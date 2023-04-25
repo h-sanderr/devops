@@ -222,13 +222,13 @@ $ git branch -d hotfix-1.2.1
     $ git push origin main
     ```
 
-12. Incorporar à `develop`, subir mudanças e deletar branch `release-0.1`:
+12. Incorporar à `develop`, subir mudanças e deletar branch `release-0.1.0`:
 
     ```console
     $ git checkout develop
-    $ git merge --no-ff release-0.1
+    $ git merge --no-ff release-0.1.0
     $ git push origin develop
-    $ git branch -d release-0.1
+    $ git branch -d release-0.1.0
     ```
 
 13. Subir _tag_ 0.1.0 para o GitHub:

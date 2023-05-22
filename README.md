@@ -13,7 +13,7 @@ Padrões para uso de ferramentas de controle de versão são necessários para e
 ## Ferramentas
 
 - Git: ferramenta grátis e de código aberto para controle de versões. [Faça download do Git a partir do site oficial aqui](https://git-scm.com/downloads).
-- git-flow: conjunto de feramentas para facilitar o trabalho com o [Gitflow](https://nvie.com/about/), modelo de ramificação de Git criado pelo engenheiro de software Vincent Driessen. A partir das últimas versões do Git, o git-flow já vem incluso. Para checar se você tem git-flow instalado, utilize o comando `git flow version`. Se o git-flow estiver instalado, você deverá ver a versão dele impressa no terminal:
+- git-flow: conjunto de ferramentas para facilitar o trabalho com o [Gitflow](https://nvie.com/about/), modelo de ramificação de Git criado pelo engenheiro de software Vincent Driessen. A partir das últimas versões do Git, o git-flow já vem incluso. Para checar se você tem git-flow instalado, utilize o comando `git flow version`. Se o git-flow estiver instalado, você deverá ver a versão dele impressa no terminal:
 
   ```console
   $ git flow version

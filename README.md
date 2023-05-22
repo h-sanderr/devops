@@ -8,7 +8,7 @@
 
 ## Introdução
 
-Padrões para uso de ferramentas de controle de versão são necessários para evitar frustrações e retrabalho durante o fluxo de desenvolvimento de uma aplicação e facilitar o trabalho em equipe. As principais etapas do processo de desevolvimento de software &ndash; especificação, desenvolvimento, validação e evolução &ndash; são beneficiadas com o estabelecimento de padrões bem definidos para o controle de versão do software. Este documento trata-se de uma proposta simplificada de práticas para controle de versão, levando em consideração as particularidades do desenvolvimento de software para sistemas embarcados (firmware).
+Padrões para uso de ferramentas de controle de versão são necessários para evitar frustrações e retrabalho durante o fluxo de desenvolvimento de uma aplicação e facilitar o trabalho em equipe. As principais etapas do processo de desenvolvimento de software &ndash; especificação, desenvolvimento, validação e evolução &ndash; são beneficiadas com o estabelecimento de padrões bem definidos para o controle de versão do software. Este documento trata-se de uma proposta simplificada de práticas para controle de versão, levando em consideração as particularidades do desenvolvimento de software para sistemas embarcados (firmware).
 
 ## Ferramentas
 

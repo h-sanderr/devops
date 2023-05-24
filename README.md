@@ -80,7 +80,7 @@ Agora é o momento de preparar o ambiente de desenvolvimento. O passo a passo é
 
    Aqui, o ramo para lançamentos de produção foi nomeado de `main` e o ramo para os próximos lançamentos foi nomeado de `develop`. Os prefixos dos ramos de recurso (_feature_), lançamento (_release_) e _hotfix_ foram definidos, respectivamente, como `recurso/`, `lancamento/` e `hotfix/`. Visando simplificar as operações, os ramos de _bugfix_ _support_ não serão utilizados. O prefixo para as _tags_ das versões foi definido como a letra `v`.
 
-4. Após realizar as configurações, deve-se subir as mudanças para o GitHub utilizando o comando `git push --set-upstream origin develop`
+4. Assegure-se de que você está no ramo `develop` (se não estiver, use o comando `git switch develop` para trocar para o ramo correto) e então deve-se subir as mudanças para o GitHub utilizando o comando `git push --set-upstream origin develop`.
 
 ### Desenvolvimento de recursos
 
